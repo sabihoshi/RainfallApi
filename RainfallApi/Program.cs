@@ -17,6 +17,14 @@ builder.Services.AddSwaggerGen(options =>
         Description = "An API which provides rainfall reading data"
     });
 
+    options.AddServer(new OpenApiServer
+    {
+        Url         = "https://localhost:3000",
+        Description = "Rainfall Api (HTTPS)"
+    });
+
+    options.EnableAnnotations();
+
     var xml = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xml));
 });
