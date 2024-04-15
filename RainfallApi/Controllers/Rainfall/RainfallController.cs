@@ -1,12 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Client;
+using RainfallApi.Client.Models;
 using RainfallApi.Models;
 
 namespace RainfallApi.Controllers.Rainfall;
 
+/// <summary>
+///     Controller for retrieving rainfall readings
+/// </summary>
 [ApiController]
 [Route("[controller]")]
-public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
+public class RainfallController(
+    IRainfallApi rainfallApi,
+    IValidator<RainfallReadingQuery> queryValidator,
+    IValidator<RainfallRequestResult> resultValidator) : ControllerBase
 {
     /// <summary>
     ///     Retrieve the latest readings for the specified stationId
@@ -21,31 +29,13 @@ public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
     [ProducesResponseType(typeof(ErrorResponse), 500)]
     public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
     {
-        if (string.IsNullOrEmpty(stationId))
-        {
-            return BadRequest(new ErrorResponse
-            {
-                Message = "Invalid request",
-                Details =
-                [
-                    new ErrorDetail { Message = "StationId is required", PropertyName = "stationId" }
-                ]
-            });
-        }
+        var query           = new RainfallReadingQuery(stationId, count);
+        var queryValidation = await queryValidator.ValidateAsync(query);
+        if (!queryValidation.IsValid) return BadRequest(queryValidation.ToErrorResponse());
 
-        if (count is < 0 or > 100)
-        {
-            return BadRequest(new ErrorResponse
-            {
-                Message = "Invalid request",
-                Details =
-                [
-                    new ErrorDetail { Message = "Count must be between 0 and 100", PropertyName = "count" }
-                ]
-            });
-        }
-
-        var result = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
+        var result           = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
+        var resultValidation = await resultValidator.ValidateAsync(result);
+        if (!resultValidation.IsValid) return NotFound(resultValidation.ToErrorResponse());
 
         return Ok(new RainfallReadingResponse
         {
