@@ -15,7 +15,12 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version     = "v1.0",
         Title       = "Rainfall API",
-        Description = "An API which provides rainfall reading data"
+        Description = "An API which provides rainfall reading data",
+        License = new OpenApiLicense
+        {
+            Name = "MIT License",
+            Url  = new Uri("https://opensource.org/license/mit")
+        }
     });
 
     options.AddServer(new OpenApiServer

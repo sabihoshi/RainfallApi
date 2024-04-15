@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RainfallApi.Client\RainfallApi.Client.csproj" />
+        <ProjectReference Include="..\RainfallApi.Client\RainfallApi.Client.csproj" />
     </ItemGroup>
 
 </Project>
