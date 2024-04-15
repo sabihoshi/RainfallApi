@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RainfallApi.Client;
 using RainfallApi.Models;
 
 namespace RainfallApi.Controllers.Rainfall;
 
 [ApiController]
 [Route("[controller]")]
-public class RainfallController : ControllerBase
+public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
 {
     /// <summary>
     ///     Retrieve the latest readings for the specified stationId
@@ -20,6 +21,18 @@ public class RainfallController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponse), 500)]
     public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
     {
+        if (string.IsNullOrEmpty(stationId))
+        {
+            return BadRequest(new ErrorResponse
+            {
+                Message = "Invalid request",
+                Details =
+                [
+                    new ErrorDetail { Message = "StationId is required", PropertyName = "stationId" }
+                ]
+            });
+        }
+
         if (count is < 0 or > 100)
         {
             return BadRequest(new ErrorResponse
@@ -32,8 +45,7 @@ public class RainfallController : ControllerBase
             });
         }
 
-        var api    = Client.RainfallApi.Create();
-        var result = await api.GetRainfallReadingsAsync(stationId, count);
+        var result = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
 
         return Ok(new RainfallReadingResponse
         {

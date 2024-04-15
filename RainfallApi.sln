@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallApi", "RainfallApi\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallApi.Client", "RainfallApi.Client\RainfallApi.Client.csproj", "{52F5FCAA-9435-43B3-BE3A-5246BB7DC9C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallApi.Tests", "RainfallApi.Tests\RainfallApi.Tests.csproj", "{3B1803AF-41E1-404F-80C3-411CD8E408D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{52F5FCAA-9435-43B3-BE3A-5246BB7DC9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F5FCAA-9435-43B3-BE3A-5246BB7DC9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52F5FCAA-9435-43B3-BE3A-5246BB7DC9C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1803AF-41E1-404F-80C3-411CD8E408D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1803AF-41E1-404F-80C3-411CD8E408D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1803AF-41E1-404F-80C3-411CD8E408D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1803AF-41E1-404F-80C3-411CD8E408D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

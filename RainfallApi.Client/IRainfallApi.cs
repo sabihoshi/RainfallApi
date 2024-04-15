@@ -15,9 +15,3 @@ public interface IRainfallApi
     Task<RainfallRequestResult> GetRainfallReadingsAsync(
         string id, [AliasAs("_limit")] int limit = 10);
 }
-
-public class RainfallApi
-{
-    public static IRainfallApi Create()
-        => RestService.For<IRainfallApi>("https://environment.data.gov.uk/flood-monitoring");
-}

@@ -1,7 +1,7 @@
 namespace RainfallApi.Controllers.Rainfall;
 
 /// <summary>
-///  Details of a rainfall reading
+///     Details of a rainfall reading
 /// </summary>
 public class RainfallReadingResponse
 {
