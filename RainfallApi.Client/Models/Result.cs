@@ -19,9 +19,9 @@ public class Item
     public decimal Value { get; set; }
 
     [JsonPropertyName("@id")]
-    public Uri Id { get; set; }
+    public required Uri Id { get; set; }
 
-    public Uri Measure { get; set; }
+    public required Uri Measure { get; set; }
 }
 
 public class Meta
