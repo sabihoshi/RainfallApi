@@ -33,13 +33,20 @@ The API provides access to the following resources:
 - [Git](https://git-scm.com/) for cloning the repository
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/download) for running the API
 
-1. Clone the repository
+1. Trust the development certificate by running the following command:
+    ```shell
+    dotnet dev-certs https --trust
+    ```
+
+    > **Note:** This is only for development purposes. In a production environment, you should use a valid SSL certificate.
+
+2. Clone the repository
     ```shell
     git clone https://github.com/sabihoshi/RainfallApi
     cd RainfallApi
     ```
 
-2. Run the API on your local machine (HTTPS)
+3. Run the API on your local machine (HTTPS)
     ```shell
     dotnet run --project ./RainfallApi/RainfallApi.csproj --launch-profile "https"
     ```
