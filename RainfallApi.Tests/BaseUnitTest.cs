@@ -55,6 +55,6 @@ public abstract class BaseUnitTest<TUnit> : BaseUnitTest where TUnit : class
            .Single(s => s.Name == nameof(FixtureRegistrar.Inject));
 
         var genericInject = injectMethod.MakeGenericMethod(realTypeOfObject);
-        _ = genericInject.Invoke(null, new[] { fixture, objectToInject });
+        _ = genericInject.Invoke(null, [fixture, objectToInject]);
     }
 }

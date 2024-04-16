@@ -1,7 +1,5 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Client;
-using RainfallApi.Client.Models;
 using RainfallApi.Models;
 
 namespace RainfallApi.Controllers.Rainfall;
@@ -11,10 +9,7 @@ namespace RainfallApi.Controllers.Rainfall;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class RainfallController(
-    IRainfallApi rainfallApi,
-    IValidator<RainfallReadingQuery> queryValidator,
-    IValidator<RainfallRequestResult> resultValidator) : ControllerBase
+public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
 {
     /// <summary>
     ///     Retrieve the latest readings for the specified stationId
@@ -30,11 +25,11 @@ public class RainfallController(
     public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
     {
         var query           = new RainfallReadingQuery(stationId, count);
-        var queryValidation = await queryValidator.ValidateAsync(query);
+        var queryValidation = await new RainfallReadingQueryValidator().ValidateAsync(query);
         if (!queryValidation.IsValid) return BadRequest(queryValidation.ToErrorResponse());
 
         var result           = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
-        var resultValidation = await resultValidator.ValidateAsync(result);
+        var resultValidation = await new RainfallRequestResultValidator().ValidateAsync(result);
         if (!resultValidation.IsValid) return NotFound(resultValidation.ToErrorResponse());
 
         return Ok(new RainfallReadingResponse
