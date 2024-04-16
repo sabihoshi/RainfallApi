@@ -22,9 +22,9 @@ location has been reduced to a 100m grid.
 
 The API provides access to the following resources:
 
-| Description                                              | Endpoint                | Parameters |
-|----------------------------------------------------------|-------------------------|------------|
-| Retrieve the latest readings for the specified stationId | `/rainfall/{stationId}` | `count`    |
+| Description                                              | Endpoint                            | Parameters |
+|----------------------------------------------------------|-------------------------------------|------------|
+| Retrieve the latest readings for the specified stationId | `/rainfall/id/{stationId}/readings` | `count`    |
 
 ## How to use the API
 
@@ -47,6 +47,14 @@ The API provides access to the following resources:
 This will start the API on `https://localhost:3000`.
 You can access the API documentation
 at `https://localhost:3000/swagger/index.html` which will be opened automatically in your default browser.
+
+## Running the tests
+
+The API has a suite of unit tests that can be run using the following command in the root directory of the repository:
+
+```shell
+dotnet test
+```
 
 ## Acknowledgements
 
