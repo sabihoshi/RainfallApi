@@ -1,8 +1,11 @@
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace RainfallApi.Controllers.Rainfall;
 
 /// <summary>
 ///     Details of a rainfall reading
 /// </summary>
+[SwaggerSchema(Title = "Rainfall reading response")]
 public class RainfallReadingResponse
 {
     /// <summary>
@@ -14,6 +17,7 @@ public class RainfallReadingResponse
 /// <summary>
 ///     Details of a rainfall reading
 /// </summary>
+[SwaggerSchema(Title = "Rainfall reading")]
 public class RainfallReading
 {
     /// <summary>

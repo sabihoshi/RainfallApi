@@ -22,6 +22,11 @@ builder.Services.AddSwaggerGen(options =>
         {
             Name = "MIT License",
             Url  = new Uri("https://opensource.org/license/mit")
+        },
+        Contact = new OpenApiContact
+        {
+            Name = "Sorted",
+            Url  = new Uri("https://www.sorted.com")
         }
     });
 
@@ -30,6 +35,8 @@ builder.Services.AddSwaggerGen(options =>
         Url         = "https://localhost:3000",
         Description = "Rainfall Api (HTTPS)"
     });
+
+    options.CustomSchemaIds(x => $"{char.ToLower(x.Name[0])}{x.Name[1..]}");
 
     options.EnableAnnotations();
 

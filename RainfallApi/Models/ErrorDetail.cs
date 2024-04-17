@@ -1,8 +1,11 @@
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace RainfallApi.Models;
 
 /// <summary>
 ///     Details of an invalid request property
 /// </summary>
+[SwaggerSchema(Title = "Details of an invalid request property")]
 public class ErrorDetail
 {
     /// <summary>

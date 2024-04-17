@@ -1,8 +1,11 @@
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace RainfallApi.Models;
 
 /// <summary>
 ///     An error object returned for failed requests
 /// </summary>
+[SwaggerSchema(Title = "Error response")]
 public class ErrorResponse
 {
     /// <summary>
