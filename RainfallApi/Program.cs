@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version     = "v1.0",
-        Title       = "Rainfall API",
+        Version     = "1.0",
+        Title       = "Rainfall Api",
         Description = "An API which provides rainfall reading data",
         License = new OpenApiLicense
         {
@@ -33,7 +33,7 @@ builder.Services.AddSwaggerGen(options =>
     options.AddServer(new OpenApiServer
     {
         Url         = "https://localhost:3000",
-        Description = "Rainfall Api (HTTPS)"
+        Description = "Rainfall Api"
     });
 
     options.CustomSchemaIds(x => $"{char.ToLower(x.Name[0])}{x.Name[1..]}");
