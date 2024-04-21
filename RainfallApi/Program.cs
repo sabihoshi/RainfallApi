@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 
@@ -36,7 +37,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Rainfall Api"
     });
 
-    options.CustomSchemaIds(x => $"{char.ToLower(x.Name[0])}{x.Name[1..]}");
+    options.CustomSchemaIds(x => JsonNamingPolicy.CamelCase.ConvertName(x.Name));
 
     options.EnableAnnotations();
 
