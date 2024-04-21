@@ -3,6 +3,7 @@ using System.Text.Json;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using RainfallApi.Client;
+using RainfallApi.Controllers.Rainfall;
 using Refit;
 
 var builder       = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ var configuration = builder.Configuration;
 builder.Services
    .AddRefitClient<IRainfallApi>()
    .ConfigureHttpClient(client => client.BaseAddress = new Uri(configuration["ApiUrls:RainfallApi"]!));
+
+builder.Services.AddSingleton<IRainfallService, RainfallService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddControllers();

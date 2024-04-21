@@ -1,3 +1,5 @@
+using System.Net;
+using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace RainfallApi.Models;
@@ -8,6 +10,12 @@ namespace RainfallApi.Models;
 [SwaggerSchema(Title = "Error response")]
 public class ErrorResponse
 {
+    /// <summary>
+    ///     The HTTP status code of the response
+    /// </summary>
+    [JsonIgnore]
+    public HttpStatusCode StatusCode { get; set; }
+
     /// <summary>
     ///     Specific details about what caused the error
     /// </summary>

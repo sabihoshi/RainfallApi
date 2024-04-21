@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using RainfallApi.Client;
 using RainfallApi.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -12,7 +11,7 @@ namespace RainfallApi.Controllers.Rainfall;
 [ApiController]
 [Route("rainfall")]
 [SwaggerTag("Operations relating to rainfall")]
-public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
+public class RainfallController(IRainfallService rainfallService) : ControllerBase
 {
     /// <summary>
     ///     Get rainfall readings by station Id
@@ -31,21 +30,7 @@ public class RainfallController(IRainfallApi rainfallApi) : ControllerBase
     [SwaggerResponse(500, "Internal server error", typeof(ErrorResponse), ["application/json"])]
     public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery] [Range(1, 100)] int count = 10)
     {
-        var query           = new RainfallReadingQuery(stationId, count);
-        var queryValidation = await new RainfallReadingQueryValidator().ValidateAsync(query);
-        if (!queryValidation.IsValid) return BadRequest(queryValidation.ToErrorResponse());
-
-        var result           = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
-        var resultValidation = await new RainfallRequestResultValidator().ValidateAsync(result);
-        if (!resultValidation.IsValid) return NotFound(resultValidation.ToErrorResponse());
-
-        return Ok(new RainfallReadingResponse
-        {
-            Readings = result.Items.Select(x => new RainfallReading
-            {
-                DateMeasured   = x.DateTime.DateTime,
-                AmountMeasured = x.Value
-            }).ToList()
-        });
+        var response = await rainfallService.GetRainfallReadingsAsync(stationId, count);
+        return response.Match(Ok, errorResponse => errorResponse.ToActionResult());
     }
 }

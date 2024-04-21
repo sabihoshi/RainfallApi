@@ -1,6 +1,6 @@
 using AutoFixture;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+using FluentAssertions.OneOf;
 using NSubstitute;
 using RainfallApi.Client;
 using RainfallApi.Client.Models;
@@ -10,7 +10,7 @@ using RainfallApi.Models;
 namespace RainfallApi.Tests;
 
 [TestFixture]
-public class RainfallTests : BaseUnitTest<RainfallController>
+public class RainfallTests : BaseUnitTest<RainfallService>
 {
     [Test]
     public async Task GetRainfallReadings_ReturnsOk_WhenValidStationIdAndCountAreProvided()
@@ -36,12 +36,11 @@ public class RainfallTests : BaseUnitTest<RainfallController>
            .Returns(response);
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
-        result.As<OkObjectResult>().Value.Should().BeOfType<RainfallReadingResponse>();
-        result.As<OkObjectResult>().Value.As<RainfallReadingResponse>().Readings.Should().HaveCount(1);
+        result.Should().BeCase<RainfallReadingResponse>();
+        result.Value.As<RainfallReadingResponse>().Readings.Should().HaveCount(1);
     }
 
     [TestCase(1)]
@@ -73,12 +72,12 @@ public class RainfallTests : BaseUnitTest<RainfallController>
            .Returns(response);
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
-        result.As<OkObjectResult>().Value.Should().BeOfType<RainfallReadingResponse>();
-        result.As<OkObjectResult>().Value.As<RainfallReadingResponse>().Readings.Should().HaveCount(1);
+        result.Should().BeCase<RainfallReadingResponse>();
+        result.Value.Should().BeOfType<RainfallReadingResponse>();
+        result.Value.As<RainfallReadingResponse>().Readings.Should().HaveCount(1);
     }
 
     [Test]
@@ -89,12 +88,12 @@ public class RainfallTests : BaseUnitTest<RainfallController>
         var count     = 5;
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<BadRequestObjectResult>();
-        result.As<BadRequestObjectResult>().Value.Should().BeOfType<ErrorResponse>();
-        result.As<BadRequestObjectResult>().Value
+        result.Should().BeCase<ErrorResponse>();
+        result.Value.Should().BeOfType<ErrorResponse>();
+        result.Value
            .As<ErrorResponse>().Details
            .Select(x => x.PropertyName)
            .Should().Contain(nameof(RainfallReadingQuery.StationId));
@@ -108,12 +107,12 @@ public class RainfallTests : BaseUnitTest<RainfallController>
         var count     = 0;
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<BadRequestObjectResult>();
-        result.As<BadRequestObjectResult>().Value.Should().BeOfType<ErrorResponse>();
-        result.As<BadRequestObjectResult>().Value
+        result.Should().BeCase<ErrorResponse>();
+        result.Value.Should().BeOfType<ErrorResponse>();
+        result.Value
            .As<ErrorResponse>().Details
            .Select(x => x.PropertyName)
            .Should().Contain(nameof(RainfallReadingQuery.Count));
@@ -127,12 +126,12 @@ public class RainfallTests : BaseUnitTest<RainfallController>
         var count     = 101;
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<BadRequestObjectResult>();
-        result.As<BadRequestObjectResult>().Value.Should().BeOfType<ErrorResponse>();
-        result.As<BadRequestObjectResult>().Value
+        result.Should().BeCase<ErrorResponse>();
+        result.Value.Should().BeOfType<ErrorResponse>();
+        result.Value
            .As<ErrorResponse>().Details
            .Select(x => x.PropertyName)
            .Should().Contain(nameof(RainfallReadingQuery.Count));
@@ -154,14 +153,14 @@ public class RainfallTests : BaseUnitTest<RainfallController>
            .Returns(response);
 
         // Act
-        var result = await Unit.GetRainfallReadings(stationId, count);
+        var result = await Unit.GetRainfallReadingsAsync(stationId, count);
 
         // Assert
-        result.Should().BeOfType<NotFoundObjectResult>();
-        result.As<NotFoundObjectResult>().Value.Should().BeOfType<ErrorResponse>();
-        result.As<NotFoundObjectResult>().Value
+        result.Should().BeCase<ErrorResponse>();
+        result.Value.Should().BeOfType<ErrorResponse>();
+        result.Value
            .As<ErrorResponse>().Details
            .Select(x => x.PropertyName)
-           .Should().Contain(nameof(RainfallReadingQuery.StationId));
+           .Should().Contain("stationId");
     }
 }
