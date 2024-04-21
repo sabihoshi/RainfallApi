@@ -17,16 +17,16 @@ public class RainfallTests : BaseUnitTest<RainfallService>
     {
         // Arrange
         var stationId = "validStationId";
-        var count     = 1;
+        var count = 1;
 
         var response = Fixture.Build<RainfallRequestResult>()
            .With(r => r.Items, [
                 new Item
                 {
-                    Id       = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Id = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
                     DateTime = DateTimeOffset.Parse("2024-01-01T00:00:00Z"),
-                    Measure  = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
-                    Value    = 0
+                    Measure = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Value = 0
                 }
             ])
            .Create();
@@ -59,10 +59,10 @@ public class RainfallTests : BaseUnitTest<RainfallService>
             {
                 new Item
                 {
-                    Id       = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Id = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
                     DateTime = DateTimeOffset.Parse("2024-01-01T00:00:00Z"),
-                    Measure  = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
-                    Value    = 0
+                    Measure = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Value = 0
                 }
             })
            .Create();
@@ -85,7 +85,7 @@ public class RainfallTests : BaseUnitTest<RainfallService>
     {
         // Arrange
         var stationId = string.Empty;
-        var count     = 5;
+        var count = 5;
 
         // Act
         var result = await Unit.GetRainfallReadingsAsync(stationId, count);
@@ -104,7 +104,7 @@ public class RainfallTests : BaseUnitTest<RainfallService>
     {
         // Arrange
         var stationId = "validStationId";
-        var count     = 0;
+        var count = 0;
 
         // Act
         var result = await Unit.GetRainfallReadingsAsync(stationId, count);
@@ -123,7 +123,7 @@ public class RainfallTests : BaseUnitTest<RainfallService>
     {
         // Arrange
         var stationId = "validStationId";
-        var count     = 101;
+        var count = 101;
 
         // Act
         var result = await Unit.GetRainfallReadingsAsync(stationId, count);
@@ -142,7 +142,7 @@ public class RainfallTests : BaseUnitTest<RainfallService>
     {
         // Arrange
         var stationId = "validStationId";
-        var count     = 1;
+        var count = 1;
 
         var response = Fixture.Build<RainfallRequestResult>()
            .With(r => r.Items, [])

@@ -6,7 +6,7 @@ using RainfallApi.Client;
 using RainfallApi.Controllers.Rainfall;
 using Refit;
 
-var builder       = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
@@ -24,24 +24,24 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version     = "1.0",
-        Title       = "Rainfall Api",
+        Version = "1.0",
+        Title = "Rainfall Api",
         Description = "An API which provides rainfall reading data",
         License = new OpenApiLicense
         {
             Name = "MIT License",
-            Url  = new Uri("https://opensource.org/license/mit")
+            Url = new Uri("https://opensource.org/license/mit")
         },
         Contact = new OpenApiContact
         {
             Name = "Sorted",
-            Url  = new Uri("https://www.sorted.com")
+            Url = new Uri("https://www.sorted.com")
         }
     });
 
     options.AddServer(new OpenApiServer
     {
-        Url         = "https://localhost:3000",
+        Url = "https://localhost:3000",
         Description = "Rainfall Api"
     });
 

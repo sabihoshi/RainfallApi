@@ -13,7 +13,7 @@ public class RainfallService(IRainfallApi rainfallApi) : IRainfallService
     public async Task<OneOf<RainfallReadingResponse, ErrorResponse>> GetRainfallReadingsAsync(
         string stationId, int count)
     {
-        var query            = new RainfallReadingQuery(stationId, count);
+        var query = new RainfallReadingQuery(stationId, count);
         var validationResult = await new RainfallReadingQueryValidator().ValidateAsync(query);
         if (!validationResult.IsValid) return validationResult.ToErrorResponse();
 
@@ -25,12 +25,12 @@ public class RainfallService(IRainfallApi rainfallApi) : IRainfallService
                 return new ErrorResponse
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    Message    = "No readings found for the specified stationId",
+                    Message = "No readings found for the specified stationId",
                     Details =
                     [
                         new ErrorDetail
                         {
-                            Message      = "No readings found for the specified stationId",
+                            Message = "No readings found for the specified stationId",
                             PropertyName = nameof(stationId)
                         }
                     ]
@@ -41,7 +41,7 @@ public class RainfallService(IRainfallApi rainfallApi) : IRainfallService
             {
                 Readings = result.Items.Select(x => new RainfallReading
                 {
-                    DateMeasured   = x.DateTime.DateTime,
+                    DateMeasured = x.DateTime.DateTime,
                     AmountMeasured = x.Value
                 }).ToList()
             };

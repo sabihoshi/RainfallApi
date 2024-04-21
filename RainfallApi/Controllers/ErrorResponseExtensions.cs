@@ -21,10 +21,10 @@ public static class ErrorResponseExtensions
     public static ErrorResponse ToErrorResponse(this ValidationResult validationResult, string? message = null) => new()
     {
         StatusCode = HttpStatusCode.BadRequest,
-        Message    = message ?? "Validation failed",
+        Message = message ?? "Validation failed",
         Details = validationResult.Errors.Select(x => new ErrorDetail
         {
-            Message      = x.ErrorMessage,
+            Message = x.ErrorMessage,
             PropertyName = x.PropertyName
         }).ToList()
     };
@@ -37,10 +37,10 @@ public static class ErrorResponseExtensions
     public static ErrorResponse ToErrorResponse(this ValidationException validationException) => new()
     {
         StatusCode = HttpStatusCode.BadRequest,
-        Message    = validationException.Message,
+        Message = validationException.Message,
         Details = validationException.Errors.Select(x => new ErrorDetail
         {
-            Message      = x.ErrorMessage,
+            Message = x.ErrorMessage,
             PropertyName = x.PropertyName
         }).ToList()
     };
@@ -53,12 +53,12 @@ public static class ErrorResponseExtensions
     public static ErrorResponse ToErrorResponse(this HttpRequestException httpRequestException) => new()
     {
         StatusCode = HttpStatusCode.InternalServerError,
-        Message    = "An error occurred with the request to the API",
+        Message = "An error occurred with the request to the API",
         Details =
         [
             new ErrorDetail
             {
-                Message      = httpRequestException.Message,
+                Message = httpRequestException.Message,
                 PropertyName = string.Empty
             }
         ]
@@ -87,10 +87,10 @@ public static class ErrorResponseExtensions
         return new ErrorResponse
         {
             StatusCode = apiException.StatusCode,
-            Message    = apiException.Message,
+            Message = apiException.Message,
             Details = errors?.Select(x => new ErrorDetail
             {
-                Message      = x.Value,
+                Message = x.Value,
                 PropertyName = x.Key
             }).ToList() ?? []
         };
