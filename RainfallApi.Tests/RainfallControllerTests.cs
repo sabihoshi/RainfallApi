@@ -9,6 +9,19 @@ public class RainfallControllerTests : WebApplicationFactory<Program>
     private HttpClient _client;
 
     [Test]
+    public async Task GetRainfallReadingsController_ReturnsBadGateway_WhenWrongPortIsUsed()
+    {
+        // Arrange
+        _client.BaseAddress = new Uri("http://localhost:9999");
+
+        // Act
+        var response = await _client.GetAsync("/rainfall/id/3680/readings");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadGateway);
+    }
+
+    [Test]
     public async Task GetRainfallReadingsController_ReturnsBadRequest_WhenCountIsGreaterThanOneHundred()
     {
         // Act

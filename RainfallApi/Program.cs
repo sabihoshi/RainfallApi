@@ -2,12 +2,16 @@ using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
+using RainfallApi;
 using RainfallApi.Client;
 using RainfallApi.Controllers.Rainfall;
 using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+var kestrelConfig = configuration.GetSection("Kestrel:Endpoints:Https:Url").Get<string>()!;
+var uri = new Uri(kestrelConfig);
 
 // Add services to the container.
 builder.Services
@@ -41,7 +45,7 @@ builder.Services.AddSwaggerGen(options =>
 
     options.AddServer(new OpenApiServer
     {
-        Url = "https://localhost:3000",
+        Url = uri.ToString(),
         Description = "Rainfall Api"
     });
 
@@ -67,6 +71,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<EnforcePortMiddleware>(uri.Port);
 
 app.Run();
 
