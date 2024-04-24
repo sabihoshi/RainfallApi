@@ -72,8 +72,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseMiddleware<EnforcePortMiddleware>(uri.Port);
-
 app.Run();
 
 /// <summary>
