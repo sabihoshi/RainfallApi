@@ -2,7 +2,6 @@
 using OneOf;
 using RainfallApi.Client;
 using RainfallApi.Models;
-using Refit;
 
 namespace RainfallApi.Controllers.Rainfall;
 
@@ -17,42 +16,31 @@ public class RainfallService(IRainfallApi rainfallApi) : IRainfallService
         var validationResult = await new RainfallReadingQueryValidator().ValidateAsync(query);
         if (!validationResult.IsValid) return validationResult.ToErrorResponse();
 
-        try
+        var result = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
+        if (result.Items.Length == 0)
         {
-            var result = await rainfallApi.GetRainfallReadingsAsync(stationId, count);
-            if (result.Items.Length == 0)
+            return new ErrorResponse
             {
-                return new ErrorResponse
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "No readings found for the specified stationId",
-                    Details =
-                    [
-                        new ErrorDetail
-                        {
-                            Message = "No readings found for the specified stationId",
-                            PropertyName = nameof(stationId)
-                        }
-                    ]
-                };
-            }
-
-            return new RainfallReadingResponse
-            {
-                Readings = result.Items.Select(x => new RainfallReading
-                {
-                    DateMeasured = x.DateTime.DateTime,
-                    AmountMeasured = x.Value
-                }).ToList()
+                StatusCode = HttpStatusCode.NotFound,
+                Message = "No readings found for the specified stationId",
+                Details =
+                [
+                    new ErrorDetail
+                    {
+                        Message = "No readings found for the specified stationId",
+                        PropertyName = nameof(stationId)
+                    }
+                ]
             };
         }
-        catch (ApiException e)
+
+        return new RainfallReadingResponse
         {
-            return await e.ToErrorResponseAsync();
-        }
-        catch (HttpRequestException e)
-        {
-            return e.ToErrorResponse();
-        }
+            Readings = result.Items.Select(x => new RainfallReading
+            {
+                DateMeasured = x.DateTime.DateTime,
+                AmountMeasured = x.Value
+            }).ToList()
+        };
     }
 }

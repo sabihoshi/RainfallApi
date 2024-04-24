@@ -65,6 +65,25 @@ public static class ErrorResponseExtensions
     };
 
     /// <summary>
+    ///     Converts an Exception to an ErrorResponse
+    /// </summary>
+    /// <param name="exception">The exception</param>
+    /// <returns>An <see cref="ErrorResponse" /></returns>
+    public static ErrorResponse ToErrorResponse(this Exception exception) => new()
+    {
+        StatusCode = HttpStatusCode.InternalServerError,
+        Message = "An error occurred with the request to the API",
+        Details =
+        [
+            new ErrorDetail
+            {
+                Message = exception.Message,
+                PropertyName = string.Empty
+            }
+        ]
+    };
+
+    /// <summary>
     ///     Converts an ErrorResponse to an IActionResult
     /// </summary>
     /// <param name="errorResponse">The error response</param>

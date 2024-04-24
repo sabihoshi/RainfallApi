@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
-using RainfallApi;
 using RainfallApi.Client;
 using RainfallApi.Controllers.Rainfall;
 using Refit;
@@ -16,7 +15,14 @@ var uri = new Uri(kestrelConfig);
 // Add services to the container.
 builder.Services
    .AddRefitClient<IRainfallApi>()
-   .ConfigureHttpClient(client => client.BaseAddress = new Uri(configuration["ApiUrls:RainfallApi"]!));
+   .ConfigureHttpClient(client =>
+    {
+        var baseAddress = configuration.GetRequiredSection("ApiUrls:RainfallApi").Get<string>()!;
+        if (string.IsNullOrEmpty(baseAddress))
+            throw new Exception("The base address for the Rainfall API is not configured.");
+
+        client.BaseAddress = new Uri(baseAddress);
+    });
 
 builder.Services.AddSingleton<IRainfallService, RainfallService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -58,6 +64,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+app.UseMiddleware<RainfallServiceExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
