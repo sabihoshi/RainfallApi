@@ -1,6 +1,7 @@
 using AutoFixture;
 using FluentAssertions;
 using FluentAssertions.OneOf;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using RainfallApi.Client;
 using RainfallApi.Client.Models;
@@ -12,6 +13,8 @@ namespace RainfallApi.Tests;
 [TestFixture]
 public class RainfallTests : BaseUnitTest<RainfallService>
 {
+    private string RainfallApiUrl => Configuration.GetRequiredSection("ApiUrls:RainfallApi").Get<string>()!;
+
     [Test]
     public async Task GetRainfallReadings_ReturnsOk_WhenValidStationIdAndCountAreProvided()
     {
@@ -23,9 +26,9 @@ public class RainfallTests : BaseUnitTest<RainfallService>
            .With(r => r.Items, [
                 new Item
                 {
-                    Id = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Id = new Uri(RainfallApiUrl),
                     DateTime = DateTimeOffset.Parse("2024-01-01T00:00:00Z"),
-                    Measure = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Measure = new Uri(RainfallApiUrl),
                     Value = 0
                 }
             ])
@@ -59,9 +62,9 @@ public class RainfallTests : BaseUnitTest<RainfallService>
             {
                 new Item
                 {
-                    Id = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Id = new Uri(RainfallApiUrl),
                     DateTime = DateTimeOffset.Parse("2024-01-01T00:00:00Z"),
-                    Measure = new Uri("https://environment.data.gov.uk/flood-monitoring/"),
+                    Measure = new Uri(RainfallApiUrl),
                     Value = 0
                 }
             })

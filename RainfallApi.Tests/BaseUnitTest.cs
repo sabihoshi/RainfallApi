@@ -1,12 +1,16 @@
 ﻿using System.Reflection;
 using AutoFixture;
 using AutoFixture.AutoNSubstitute;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 
 namespace RainfallApi.Tests;
 
 public abstract class BaseUnitTest
 {
+    private static readonly string Environment
+        = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
     protected BaseUnitTest()
     {
         Fixture.Customize(new AutoNSubstituteCustomization { ConfigureMembers = true });
@@ -19,6 +23,12 @@ public abstract class BaseUnitTest
 
         Fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
+
+    protected static IConfigurationRoot Configuration => new ConfigurationBuilder()
+       .SetBasePath(Directory.GetCurrentDirectory())
+       .AddJsonFile("appsettings.json", true, true)
+       .AddJsonFile($"appsettings.{Environment}.json", true, true)
+       .Build();
 
     protected IFixture Fixture { get; } = new Fixture();
 
